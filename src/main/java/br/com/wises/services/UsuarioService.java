@@ -1,6 +1,7 @@
 package br.com.wises.services;
 
 import br.com.wises.database.EManager;
+import br.com.wises.database.pojo.Organizacao;
 import br.com.wises.database.pojo.Usuario;
 import java.util.Base64;
 import java.util.List;
@@ -57,7 +58,7 @@ public class UsuarioService {
             if (user != null) {
                 return "Login efetuado com sucesso!";
             } else {
-                return "Token válido, mas credenciais inválidas!";
+                return "Credenciais Inválidas!";
             }
         } else {
             return "Credenciais Inválidas!";
@@ -71,16 +72,34 @@ public class UsuarioService {
             @HeaderParam("novoUsuario") String novoUsuarioEncoded) {
         if (authorization != null && authorization.equals("secret")) {
             try {
-                String userEncoded = "ewogICAgImVtYWlsIjogInJvZHJpZ28ucXVpc2VuQHdpc2VzLmNvbS5iciIsCiAgICAiaWRPcmdhbml6YWNhbyI6IDEsCiAgICAibm9tZSI6ICJSb2RyaWdvIFF1aXNlbiAzIiwKICAgICJzZW5oYSI6ICIxMjMiCn0=";
-                String userDecoded = new String(Base64.getDecoder().decode(userEncoded.getBytes()));
-                System.out.println(userDecoded);
-                JSONObject userObj = new JSONObject(userDecoded);
+                //String userEncodedOk = "ewogICAgImVtYWlsIjogInJvZHJpZ28ucXVpc2VuQHdpc2VzLmNvbS5iciIsCiAgICAiaWRPcmdhbml6YWNhbyI6IDEsCiAgICAibm9tZSI6ICJSb2RyaWdvIFF1aXNlbiAzIiwKICAgICJzZW5oYSI6ICIxMjMiCn0=";
+                //String userEncodedNotOk = "ewogICAgImVtYWlsIjogInJvZHJpZ28ucXVpc2VuQHdpc2UuY29tLmJyIiwKICAgICJub21lIjogIlJvZHJpZ28gUXVpc2VuIDUiLAogICAgInNlbmhhIjogIjEyMyIKfQ==";
+                String userDecoded = new String(Base64.getDecoder().decode(novoUsuarioEncoded.getBytes()));
 
+                JSONObject userObj = new JSONObject(userDecoded);
                 Usuario novoUsuario = new Usuario();
-                novoUsuario.setEmail(userObj.getString("email"));
-                novoUsuario.setNome(userObj.getString("nome"));
-                novoUsuario.setIdOrganizacao(EManager.getInstance().getDbAccessor().getOrganizacaoById(userObj.getInt("idOrganizacao")));
-                novoUsuario.setSenha(userObj.getString("senha"));
+                String email, nome, senha;
+
+                if (userObj.has("email") && userObj.has("email") && userObj.has("email")) {
+                    email = userObj.getString("email");
+                    nome = userObj.getString("nome");
+                    senha = userObj.getString("senha");
+                } else {
+                    return "Erro ao criar conta, os dados enviados estão incompletos";
+                }
+
+                String dominio = email.split("@")[1];
+                Organizacao organizacao = new Organizacao();
+                organizacao = EManager.getInstance().getDbAccessor().getOrganizacaoByDominio(dominio);
+                if (organizacao != null) {
+                    novoUsuario.setIdOrganizacao(organizacao);
+                } else {
+                    return "O domínio do email informado não pertence a nenhuma organização";
+                }
+
+                novoUsuario.setEmail(email);
+                novoUsuario.setNome(nome);
+                novoUsuario.setSenha(senha);
 
                 EManager.getInstance().getDbAccessor().novoUsuario(novoUsuario);
 
