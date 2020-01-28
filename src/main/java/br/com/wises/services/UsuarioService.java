@@ -39,4 +39,23 @@ public class UsuarioService {
         }
         return null;
     }
+
+    @GET
+    @Path("login")
+    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    public String metodoGetJson(
+            @HeaderParam("email") String email,
+            @HeaderParam("password") String password,
+            @HeaderParam("authorization") String authorization) {
+        if (authorization != null && authorization.equals("secret")) {
+
+            Usuario user = EManager.getInstance().getUsuarioAccessor().getCredencials(email, password);
+            if (user != null) {
+                return "Login efetuado com sucesso!";
+            }
+        } else {
+            return "Credenciais Inválidas!";
+        }
+        return null;
+    }
 }

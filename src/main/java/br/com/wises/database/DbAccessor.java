@@ -27,6 +27,14 @@ public class DbAccessor {
         }
     }
 
+    public Usuario getCredencials(String email, String senha) {
+        try {
+            return (Usuario) this.manager.createNamedQuery("Usuario.findByEmailAndPassword").setParameter("email", email).setParameter("senha", senha).getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+
     public List<Usuario> getAllOrganizacoes() {
         return this.manager.createNamedQuery("Organizacao.findAll").getResultList();
     }
