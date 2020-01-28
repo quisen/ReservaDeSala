@@ -3,6 +3,7 @@ package br.com.wises.database;
 import br.com.wises.database.pojo.Usuario;
 import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 
 public class DbAccessor {
 
@@ -19,7 +20,11 @@ public class DbAccessor {
     }
 
     public Usuario getUserById(int id) {
-        return (Usuario) this.manager.createNamedQuery("Usuario.findById").setParameter("id", id).getSingleResult();
+        try {
+            return (Usuario) this.manager.createNamedQuery("Usuario.findById").setParameter("id", id).getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 
     public List<Usuario> getAllOrganizacoes() {

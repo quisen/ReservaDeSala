@@ -27,13 +27,16 @@ public class UsuarioService {
     @GET
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
-    public Usuario metodoGetJson(@PathParam("id") int id, @HeaderParam("token") String token) {
-        if (token != null && token.equals("secret")) {
+    public Usuario metodoGetJson(@PathParam("id") int id, @HeaderParam("authorization") String authorization) {
+        if (authorization != null && authorization.equals("secret")) {
             Usuario user = EManager.getInstance().getUsuarioAccessor().getUserById(id);
-            user.getIdOrganizacao().setUsuarioCollection(null);
-            return user;
+            if (user != null) {
+                user.getIdOrganizacao().setUsuarioCollection(null);
+                return user;
+            }
         } else {
             return null;
         }
+        return null;
     }
 }
