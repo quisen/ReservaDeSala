@@ -1,5 +1,8 @@
 package br.com.wises.database;
 
+import br.com.wises.database.pojo.AlocacaoSala;
+import br.com.wises.database.pojo.Organizacao;
+import br.com.wises.database.pojo.Sala;
 import br.com.wises.database.pojo.Usuario;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -35,25 +38,33 @@ public class DbAccessor {
         }
     }
 
-    public List<Usuario> getAllOrganizacoes() {
+    public List<Organizacao> getAllOrganizacoes() {
         return this.manager.createNamedQuery("Organizacao.findAll").getResultList();
     }
 
-    public List<Usuario> getAllSalas() {
+    public Organizacao getOrganizacaoById(int id) {
+        try {
+            return (Organizacao) this.manager.createNamedQuery("Organizacao.findById").setParameter("id", id).getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+
+    public List<Sala> getAllSalas() {
         return this.manager.createNamedQuery("Sala.findAll").getResultList();
     }
 
-    public List<Usuario> getAllAlocacaoSalas() {
+    public List<AlocacaoSala> getAllAlocacaoSalas() {
         return this.manager.createNamedQuery("AlocacaoSala.findAll").getResultList();
     }
 
-//    public void novoUsuario(Usuario usuario) {
-//        synchronized (this.operationLock) {
-//            this.manager.getTransaction().begin();
-//            this.manager.persist(usuario);
-//            this.manager.getTransaction().commit();
-//        }
-//    }
+    public void novoUsuario(Usuario usuario) {
+        synchronized (this.operationLock) {
+            this.manager.getTransaction().begin();
+            this.manager.persist(usuario);
+            this.manager.getTransaction().commit();
+        }
+    }
 //
 //    public void modificaUsuario(Usuario usuario) {
 //        synchronized (this.operationLock) {

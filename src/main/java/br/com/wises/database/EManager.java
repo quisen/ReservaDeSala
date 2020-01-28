@@ -35,7 +35,7 @@ public class EManager implements java.io.Serializable {
         return instance;
     }
 
-    public DbAccessor getUsuarioAccessor() {
+    public DbAccessor getDbAccessor() {
         return dbAccessor;
     }
 
