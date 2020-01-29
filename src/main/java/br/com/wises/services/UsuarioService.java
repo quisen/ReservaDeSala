@@ -18,16 +18,39 @@ import org.json.JSONObject;
 @Path("usuario")
 public class UsuarioService {
 
+// Esse aqui fica só de exemplo pra mostrar como faz pra pegar o parâmetro pelo path do request
+//    @GET
+//    @Path("/{email}")
+//    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+//    public Usuario getUserJson(
+//            @PathParam("email") String email,
+//            @HeaderParam("authorization") String authorization) {
+//        if (authorization != null && authorization.equals("secret")) {
+//            Usuario user = EManager.getInstance().getDbAccessor().getUserByEmail(email);
+//            if (user != null) {
+//                user.getIdOrganizacao().setUsuarioCollection(null);
+//                user.getIdOrganizacao().setSalaCollection(null);
+//                user.setSenha(null);
+//                return user;
+//            }
+//        } else {
+//            return null;
+//        }
+//        return null;
+//    }
+
     @GET
-    @Path("/{email}")
+    @Path("getByEmail")
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
-    public Usuario getUserJson(
-            @PathParam("email") String email,
+    public Usuario getUserByEmailJson(
+            @HeaderParam("email") String email,
             @HeaderParam("authorization") String authorization) {
         if (authorization != null && authorization.equals("secret")) {
             Usuario user = EManager.getInstance().getDbAccessor().getUserByEmail(email);
             if (user != null) {
                 user.getIdOrganizacao().setUsuarioCollection(null);
+                user.getIdOrganizacao().setSalaCollection(null);
+                user.setSenha(null);
                 return user;
             }
         } else {
@@ -71,7 +94,7 @@ public class UsuarioService {
                 String email, nome, senha;
                 String dominio = null;
                 int idOrganizacao = 0;
-                
+
                 if (userObj.has("email") && userObj.has("nome") && userObj.has("senha") && userObj.has("idOrganizacao")) {
                     email = userObj.getString("email");
                     nome = userObj.getString("nome");
@@ -86,16 +109,16 @@ public class UsuarioService {
                 } else {
                     return "Erro ao criar conta, os dados enviados estão incompletos";
                 }
-                
-                if(EManager.getInstance().getDbAccessor().getUserByEmail(email) != null){
-                return "O email informado já está cadastrado";
+
+                if (EManager.getInstance().getDbAccessor().getUserByEmail(email) != null) {
+                    return "O email informado já está cadastrado";
                 }
-                
+
                 Organizacao organizacao = new Organizacao();
                 try {
                     organizacao = EManager.getInstance().getDbAccessor().getOrganizacaoById(idOrganizacao);
-                    if(organizacao == null){
-                     return "Erro ao cadastrar usuário, a organização informada não existe";
+                    if (organizacao == null) {
+                        return "Erro ao cadastrar usuário, a organização informada não existe";
                     }
                 } catch (Exception e) {
                     return "Erro ao criar conta, os dados enviados estão incompletos";
