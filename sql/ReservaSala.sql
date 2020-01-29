@@ -35,7 +35,7 @@ CREATE TABLE `usuario` (
  `id` int(11) NOT NULL AUTO_INCREMENT,
  `id_organizacao` int(11) DEFAULT NULL,
  `nome` VARCHAR(45) DEFAULT NULL,
- `email` VARCHAR(45) DEFAULT NULL,
+ `email` VARCHAR(45) UNIQUE DEFAULT NULL,
  `senha` VARCHAR(256) DEFAULT NULL,
  PRIMARY KEY (`id`),
  FOREIGN KEY (`id_organizacao`) REFERENCES `organizacao` (`id`)

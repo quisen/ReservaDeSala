@@ -22,6 +22,7 @@ public class SalaService {
             List<Sala> lista = EManager.getInstance().getDbAccessor().getSalasByOrganizacaoId(idOrganizacao);
             for (int i = 0; i < lista.size(); i++) {
                 lista.get(i).getIdOrganizacao().setSalaCollection(null);
+                lista.get(i).getIdOrganizacao().setUsuarioCollection(null);
             }
             return lista;
         } else {

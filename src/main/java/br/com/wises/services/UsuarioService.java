@@ -18,24 +18,13 @@ import org.json.JSONObject;
 public class UsuarioService {
 
     @GET
-    @Path("usuarios")
-    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
-    public List<Usuario> getUsuarios() {
-        List<Usuario> lista = EManager.getInstance().getDbAccessor().getAllUsuarios();
-        for (int i = 0; i < lista.size(); i++) {
-            lista.get(i).getIdOrganizacao().setUsuarioCollection(null);
-        }
-        return lista;
-    }
-
-    @GET
-    @Path("/{id}")
+    @Path("/{email}")
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
     public Usuario getUserJson(
-            @PathParam("id") int id,
+            @PathParam("email") String email,
             @HeaderParam("authorization") String authorization) {
         if (authorization != null && authorization.equals("secret")) {
-            Usuario user = EManager.getInstance().getDbAccessor().getUserById(id);
+            Usuario user = EManager.getInstance().getDbAccessor().getUserByEmail(email);
             if (user != null) {
                 user.getIdOrganizacao().setUsuarioCollection(null);
                 return user;
@@ -73,34 +62,48 @@ public class UsuarioService {
         if (authorization != null && authorization.equals("secret")) {
             try {
                 //String userEncodedOk = "ewogICAgImVtYWlsIjogInJvZHJpZ28ucXVpc2VuQHdpc2VzLmNvbS5iciIsCiAgICAibm9tZSI6ICJSb2RyaWdvIFF1aXNlbiAzIiwKICAgICJzZW5oYSI6ICIxMjMiCn0=";
-                //String userEncodedNotOk = "ewogICAgImVtYWlsIjogInJvZHJpZ28ucXVpc2VuQHRlc3RhbmRvLmNvbS5iciIsCiAgICAibm9tZSI6ICJSb2RyaWdvIFF1aXNlbiIsCiAgICAic2VuaGEiOiAiMTIzIgp9";
+                //String userEncodedNotOk = "ewogICAgImVtYWlsIjogInJvZHJpZ28ucXVpc2VuQHdpc2UuY29tLmJyIiwKICAgICJub21lIjogIlJvZHJpZ28gUXVpc2VuIDUiLAogICAgInNlbmhhIjogIjEyMyIKfQ==";
                 String userDecoded = new String(Base64.getDecoder().decode(novoUsuarioEncoded.getBytes()));
 
                 JSONObject userObj = new JSONObject(userDecoded);
                 Usuario novoUsuario = new Usuario();
                 String email, nome, senha;
-                email = nome = senha = "";
-
-                if (userObj.has("email") && userObj.has("nome") && userObj.has("senha")) {
+                String dominio = null;
+                int idOrganizacao = 0;
+                
+                if (userObj.has("email") && userObj.has("nome") && userObj.has("senha") && userObj.has("idOrganizacao")) {
                     email = userObj.getString("email");
                     nome = userObj.getString("nome");
                     senha = userObj.getString("senha");
+                    idOrganizacao = userObj.getInt("idOrganizacao");
+
+                    if (email.isEmpty() || nome.isEmpty() || senha.isEmpty() || idOrganizacao == 0) {
+                        return "Erro ao criar conta, os dados enviados estão incompletos";
+                    } else if (email.contains("@")) {
+                        dominio = email.split("@")[1];
+                    }
                 } else {
                     return "Erro ao criar conta, os dados enviados estão incompletos";
                 }
-
-                String dominio = email.split("@")[1];
+                
+                if(EManager.getInstance().getDbAccessor().getUserByEmail(email) != null){
+                return "O email informado já está cadastrado";
+                }
+                
                 Organizacao organizacao = new Organizacao();
-                organizacao = EManager.getInstance().getDbAccessor().getOrganizacaoByDominio(dominio);
-                if (organizacao != null) {
-                    novoUsuario.setIdOrganizacao(organizacao);
-                } else {
-                    return "O domínio do email informado não pertence a nenhuma organização";
+                try {
+                    organizacao = EManager.getInstance().getDbAccessor().getOrganizacaoById(idOrganizacao);
+                    if(organizacao == null){
+                     return "Erro ao cadastrar usuário, a organização informada não existe";
+                    }
+                } catch (Exception e) {
+                    return "Erro ao criar conta, os dados enviados estão incompletos";
                 }
 
                 novoUsuario.setEmail(email);
                 novoUsuario.setNome(nome);
                 novoUsuario.setSenha(senha);
+                novoUsuario.setIdOrganizacao(organizacao);
 
                 EManager.getInstance().getDbAccessor().novoUsuario(novoUsuario);
 

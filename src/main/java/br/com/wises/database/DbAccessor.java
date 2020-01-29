@@ -30,6 +30,14 @@ public class DbAccessor {
         }
     }
 
+    public Usuario getUserByEmail(String email) {
+        try {
+            return (Usuario) this.manager.createNamedQuery("Usuario.findByEmail").setParameter("email", email).getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+
     public Usuario getCredencials(String email, String senha) {
         try {
             return (Usuario) this.manager.createNamedQuery("Usuario.findByEmailAndPassword").setParameter("email", email).setParameter("senha", senha).getSingleResult();
@@ -53,6 +61,14 @@ public class DbAccessor {
     public Organizacao getOrganizacaoByDominio(String dominio) {
         try {
             return (Organizacao) this.manager.createNamedQuery("Organizacao.findDominioLike").setParameter("dominio", dominio).getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+
+    public List<Organizacao> getOrganizacoesByDominio(String dominio) {
+        try {
+            return this.manager.createNamedQuery("Organizacao.findDominioLike").setParameter("dominio", dominio).getResultList();
         } catch (NoResultException e) {
             return null;
         }
