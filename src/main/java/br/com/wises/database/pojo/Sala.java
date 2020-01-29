@@ -83,7 +83,7 @@ public class Sala implements Serializable {
     private Date dataAlteracao;
     @JoinColumn(name = "id_organizacao", referencedColumnName = "id")
     @ManyToOne
-    private int idOrganizacao;
+    private Organizacao idOrganizacao;
 
     public Sala() {
     }
@@ -188,11 +188,11 @@ public class Sala implements Serializable {
         this.dataAlteracao = dataAlteracao;
     }
 
-    public int getIdOrganizacao() {
+    public Organizacao getIdOrganizacao() {
         return idOrganizacao;
     }
 
-    public void setIdOrganizacao(int idOrganizacao) {
+    public void setIdOrganizacao(Organizacao idOrganizacao) {
         this.idOrganizacao = idOrganizacao;
     }
 
