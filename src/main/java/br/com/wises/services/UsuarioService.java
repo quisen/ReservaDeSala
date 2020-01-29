@@ -3,6 +3,7 @@ package br.com.wises.services;
 import br.com.wises.database.EManager;
 import br.com.wises.database.pojo.Organizacao;
 import br.com.wises.database.pojo.Usuario;
+import java.nio.charset.Charset;
 import java.util.Base64;
 import java.util.List;
 import javax.ws.rs.Produces;
@@ -63,7 +64,7 @@ public class UsuarioService {
             try {
                 //String userEncodedOk = "ewogICAgImVtYWlsIjogInJvZHJpZ28ucXVpc2VuQHdpc2VzLmNvbS5iciIsCiAgICAibm9tZSI6ICJSb2RyaWdvIFF1aXNlbiAzIiwKICAgICJzZW5oYSI6ICIxMjMiCn0=";
                 //String userEncodedNotOk = "ewogICAgImVtYWlsIjogInJvZHJpZ28ucXVpc2VuQHdpc2UuY29tLmJyIiwKICAgICJub21lIjogIlJvZHJpZ28gUXVpc2VuIDUiLAogICAgInNlbmhhIjogIjEyMyIKfQ==";
-                String userDecoded = new String(Base64.getDecoder().decode(novoUsuarioEncoded.getBytes()));
+                String userDecoded = new String(Base64.getDecoder().decode(novoUsuarioEncoded.getBytes()), Charset.forName("UTF-8"));
 
                 JSONObject userObj = new JSONObject(userDecoded);
                 Usuario novoUsuario = new Usuario();
