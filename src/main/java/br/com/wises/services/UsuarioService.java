@@ -73,14 +73,15 @@ public class UsuarioService {
         if (authorization != null && authorization.equals("secret")) {
             try {
                 //String userEncodedOk = "ewogICAgImVtYWlsIjogInJvZHJpZ28ucXVpc2VuQHdpc2VzLmNvbS5iciIsCiAgICAibm9tZSI6ICJSb2RyaWdvIFF1aXNlbiAzIiwKICAgICJzZW5oYSI6ICIxMjMiCn0=";
-                //String userEncodedNotOk = "ewogICAgImVtYWlsIjogInJvZHJpZ28ucXVpc2VuQHdpc2UuY29tLmJyIiwKICAgICJub21lIjogIlJvZHJpZ28gUXVpc2VuIDUiLAogICAgInNlbmhhIjogIjEyMyIKfQ==";
+                //String userEncodedNotOk = "ewogICAgImVtYWlsIjogInJvZHJpZ28ucXVpc2VuQHRlc3RhbmRvLmNvbS5iciIsCiAgICAibm9tZSI6ICJSb2RyaWdvIFF1aXNlbiIsCiAgICAic2VuaGEiOiAiMTIzIgp9";
                 String userDecoded = new String(Base64.getDecoder().decode(novoUsuarioEncoded.getBytes()));
 
                 JSONObject userObj = new JSONObject(userDecoded);
                 Usuario novoUsuario = new Usuario();
                 String email, nome, senha;
+                email = nome = senha = "";
 
-                if (userObj.has("email") && userObj.has("email") && userObj.has("email")) {
+                if (userObj.has("email") && userObj.has("nome") && userObj.has("senha")) {
                     email = userObj.getString("email");
                     nome = userObj.getString("nome");
                     senha = userObj.getString("senha");
