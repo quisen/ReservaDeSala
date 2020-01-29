@@ -44,8 +44,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Sala.findByLongitude", query = "SELECT s FROM Sala s WHERE s.longitude = :longitude"),
     @NamedQuery(name = "Sala.findByAtivo", query = "SELECT s FROM Sala s WHERE s.ativo = :ativo"),
     @NamedQuery(name = "Sala.findByDataCriacao", query = "SELECT s FROM Sala s WHERE s.dataCriacao = :dataCriacao"),
-    @NamedQuery(name = "Sala.findByDataAlteracao", query = "SELECT s FROM Sala s WHERE s.dataAlteracao = :dataAlteracao"),
-    @NamedQuery(name = "Sala.findByOrganizacaoId", query = "SELECT s FROM Sala s WHERE s.id_organizacao = :id_organizacao")})
+    @NamedQuery(name = "Sala.findByOrganizacaoId", query = "SELECT s FROM Sala s JOIN s.idOrganizacao o WHERE o.id = :idOrganizacao"),
+    @NamedQuery(name = "Sala.findByDataAlteracao", query = "SELECT s FROM Sala s WHERE s.dataAlteracao = :dataAlteracao")
+    })
 public class Sala implements Serializable {
 
     private static final long serialVersionUID = 1L;

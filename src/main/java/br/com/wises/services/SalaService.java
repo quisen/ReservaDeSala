@@ -19,8 +19,10 @@ public class SalaService {
             @HeaderParam("id_organizacao") int idOrganizacao,
             @HeaderParam("authorization") String authorization) {
         if (authorization != null && authorization.equals("secret")) {
-//            List<Sala> lista = EManager.getInstance().getDbAccessor().getSalasByOrganizacaoId(idOrganizacao);
-            List<Sala> lista = EManager.getInstance().getDbAccessor().getAllSalas();
+            List<Sala> lista = EManager.getInstance().getDbAccessor().getSalasByOrganizacaoId(idOrganizacao);
+            for (int i = 0; i < lista.size(); i++) {
+                lista.get(i).getIdOrganizacao().setSalaCollection(null);
+            }
             return lista;
         } else {
             return null;

@@ -64,7 +64,7 @@ public class DbAccessor {
 
     public List<Sala> getSalasByOrganizacaoId(int id) {
         try {
-            return this.manager.createNamedQuery("Sala.findByOrganizacaoId").setParameter("id_organicacao", id).getResultList();
+            return this.manager.createNamedQuery("Sala.findByOrganizacaoId").setParameter("idOrganizacao", id).getResultList();
         } catch (NoResultException e) {
             return null;
         }
