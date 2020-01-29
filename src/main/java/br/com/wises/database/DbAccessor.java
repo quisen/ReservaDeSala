@@ -50,8 +50,24 @@ public class DbAccessor {
         }
     }
 
+    public Organizacao getOrganizacaoByDominio(String dominio) {
+        try {
+            return (Organizacao) this.manager.createNamedQuery("Organizacao.findDominioLike").setParameter("dominio", dominio).getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+
     public List<Sala> getAllSalas() {
         return this.manager.createNamedQuery("Sala.findAll").getResultList();
+    }
+
+    public List<Sala> getSalasByOrganizacaoId(int id) {
+        try {
+            return this.manager.createNamedQuery("Sala.findByOrganizacaoId").setParameter("id_organicacao", id).getResultList();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 
     public List<AlocacaoSala> getAllAlocacaoSalas() {

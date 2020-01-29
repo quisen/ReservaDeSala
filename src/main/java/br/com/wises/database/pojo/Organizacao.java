@@ -31,8 +31,14 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Organizacao.findByDominio", query = "SELECT o FROM Organizacao o WHERE o.dominio = :dominio"),
     @NamedQuery(name = "Organizacao.findByAtivo", query = "SELECT o FROM Organizacao o WHERE o.ativo = :ativo"),
     @NamedQuery(name = "Organizacao.findByDataCriacao", query = "SELECT o FROM Organizacao o WHERE o.dataCriacao = :dataCriacao"),
-    @NamedQuery(name = "Organizacao.findByDataAlteracao", query = "SELECT o FROM Organizacao o WHERE o.dataAlteracao = :dataAlteracao")})
+    @NamedQuery(name = "Organizacao.findByDataAlteracao", query = "SELECT o FROM Organizacao o WHERE o.dataAlteracao = :dataAlteracao"),
+    @NamedQuery(name = "Organizacao.findDominioLike", query = "SELECT o FROM Organizacao o WHERE o.dominio LIKE :dominio "),})
 public class Organizacao implements Serializable {
+
+    @Column(name = "ativo")
+    private Boolean ativo;
+    @OneToMany(mappedBy = "idOrganizacao")
+    private Collection<Sala> salaCollection;
 
     @OneToMany(mappedBy = "idOrganizacao")
     private Collection<Usuario> usuarioCollection;
@@ -53,8 +59,6 @@ public class Organizacao implements Serializable {
     @Size(max = 64)
     @Column(name = "dominio")
     private String dominio;
-    @Column(name = "ativo")
-    private Short ativo;
     @Column(name = "dataCriacao")
     @Temporal(TemporalType.TIMESTAMP)
     private Date dataCriacao;
@@ -109,13 +113,6 @@ public class Organizacao implements Serializable {
         this.dominio = dominio;
     }
 
-    public Short getAtivo() {
-        return ativo;
-    }
-
-    public void setAtivo(Short ativo) {
-        this.ativo = ativo;
-    }
 
     public Date getDataCriacao() {
         return dataCriacao;
@@ -146,5 +143,22 @@ public class Organizacao implements Serializable {
     public void setUsuarioCollection(Collection<Usuario> usuarioCollection) {
         this.usuarioCollection = usuarioCollection;
     }
-    
+
+    public Boolean getAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(Boolean ativo) {
+        this.ativo = ativo;
+    }
+
+    @XmlTransient
+    public Collection<Sala> getSalaCollection() {
+        return salaCollection;
+    }
+
+    public void setSalaCollection(Collection<Sala> salaCollection) {
+        this.salaCollection = salaCollection;
+    }
+
 }

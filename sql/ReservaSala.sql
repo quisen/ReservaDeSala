@@ -7,7 +7,7 @@ CREATE TABLE `organizacao` (
  `id_organizacao_pai` int(11) DEFAULT NULL,
  `tipo_organizacao` char(1) DEFAULT 'M',
  `dominio` VARCHAR(64) DEFAULT NULL,
- `ativo` tinyint(4) DEFAULT '1',
+ `ativo` TINYINT(1) DEFAULT '1',
  `dataCriacao` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
  `dataAlteracao` timestamp NULL DEFAULT NULL,
  PRIMARY KEY (`id`)
@@ -18,13 +18,13 @@ CREATE TABLE `sala` (
  `id_organizacao` int(11) DEFAULT NULL,
  `nome` VARCHAR(45) DEFAULT NULL,
  `quantidadePessoasSentadas` int(11) DEFAULT NULL,
- `possuiMultimidia` tinyint(4) DEFAULT '1',
- `possuiArcon` tinyint(4) DEFAULT '1',
+ `possuiMultimidia` TINYINT(1) DEFAULT '1',
+ `possuiArcon` TINYINT(1) DEFAULT '1',
  `areaDaSala` decimal(9,2) DEFAULT NULL,
  `localizacao` VARCHAR(128) DEFAULT NULL,
  `latitude` double DEFAULT NULL,
  `longitude` double DEFAULT NULL,
- `ativo` tinyint(4) DEFAULT '1',
+ `ativo` TINYINT(1) DEFAULT '1',
  `dataCriacao` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
  `dataAlteracao` timestamp NULL DEFAULT NULL,
  PRIMARY KEY (`id`),
@@ -50,8 +50,13 @@ CREATE TABLE `alocacao_sala` (
  `descricao` VARCHAR(45) DEFAULT NULL,
  `dataCriacao` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
  `dataAlteracao` timestamp NULL DEFAULT NULL,
- `ativo` tinyint(4) DEFAULT '1',
+ `ativo` TINYINT(1) DEFAULT '1',
  PRIMARY KEY (`id`),
  FOREIGN KEY (`id_sala`) REFERENCES `sala` (`id`),
  FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id`)
 );
+
+
+INSERT INTO `reserva_sala`.`organizacao` (`id`, `nome`, `tipo_organizacao`, `dominio`, `ativo`, `dataCriacao`, `dataAlteracao`) VALUES ('1', 'Wise', 'M', 'wises.com.br', '1', '2020-01-28 21:10:00', '2020-01-28 21:10:00');
+INSERT INTO `reserva_sala`.`usuario` (`id`, `id_organizacao`, `nome`, `email`, `senha`) VALUES ('1', '1', 'Rodrigo Quisen', 'rodrigo.quisen@wises.com.br', '123');
+INSERT INTO `reserva_sala`.`sala` (`id`, `id_organizacao`, `nome`, `quantidadePessoasSentadas`, `possuiMultimidia`, `possuiArcon`, `areaDaSala`, `localizacao`, `latitude`, `longitude`, `ativo`, `dataCriacao`, `dataAlteracao`) VALUES ('1', '1', 'Sala A', '10', '1', '1', '20', '3 Andar', '-25.4520819', '-49.2640187', '1', '2020-01-28 21:15:00', '2020-01-28 21:15:00');

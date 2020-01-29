@@ -61,7 +61,7 @@ public class UsuarioService {
                 return "Credenciais Inválidas!";
             }
         } else {
-            return "Credenciais Inválidas!";
+            return "Token Inválido";
         }
     }
 
@@ -72,7 +72,7 @@ public class UsuarioService {
             @HeaderParam("novoUsuario") String novoUsuarioEncoded) {
         if (authorization != null && authorization.equals("secret")) {
             try {
-                //String userEncodedOk = "ewogICAgImVtYWlsIjogInJvZHJpZ28ucXVpc2VuQHdpc2VzLmNvbS5iciIsCiAgICAiaWRPcmdhbml6YWNhbyI6IDEsCiAgICAibm9tZSI6ICJSb2RyaWdvIFF1aXNlbiAzIiwKICAgICJzZW5oYSI6ICIxMjMiCn0=";
+                //String userEncodedOk = "ewogICAgImVtYWlsIjogInJvZHJpZ28ucXVpc2VuQHdpc2VzLmNvbS5iciIsCiAgICAibm9tZSI6ICJSb2RyaWdvIFF1aXNlbiAzIiwKICAgICJzZW5oYSI6ICIxMjMiCn0=";
                 //String userEncodedNotOk = "ewogICAgImVtYWlsIjogInJvZHJpZ28ucXVpc2VuQHdpc2UuY29tLmJyIiwKICAgICJub21lIjogIlJvZHJpZ28gUXVpc2VuIDUiLAogICAgInNlbmhhIjogIjEyMyIKfQ==";
                 String userDecoded = new String(Base64.getDecoder().decode(novoUsuarioEncoded.getBytes()));
 
