@@ -74,6 +74,14 @@ public class DbAccessor {
         }
     }
 
+    public List<Reserva> getReservasByIdUsuario(int idUsuario) {
+        try {
+            return this.manager.createNamedQuery("Reserva.findByIdUsuario").setParameter("idUsuario", idUsuario).getResultList();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+
     public void novaReserva(Reserva reserva) {
         synchronized (this.operationLock) {
             this.manager.getTransaction().begin();

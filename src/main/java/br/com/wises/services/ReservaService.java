@@ -24,11 +24,25 @@ public class ReservaService {
     @GET
     @Path("byIdSala")
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
-    public List<Reserva> getReservas(
+    public List<Reserva> getReservasByIdSala(
             @HeaderParam("id_sala") int idSala,
             @HeaderParam("authorization") String authorization) {
         if (authorization != null && authorization.equals("secret")) {
             List<Reserva> lista = EManager.getInstance().getDbAccessor().getReservasByIdSala(idSala);
+            return lista;
+        } else {
+            return null;
+        }
+    }
+
+    @GET
+    @Path("byIdUsuario")
+    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    public List<Reserva> getReservasByIdUsuario(
+            @HeaderParam("id_usuario") int idUsuario,
+            @HeaderParam("authorization") String authorization) {
+        if (authorization != null && authorization.equals("secret")) {
+            List<Reserva> lista = EManager.getInstance().getDbAccessor().getReservasByIdUsuario(idUsuario);
             return lista;
         } else {
             return null;
