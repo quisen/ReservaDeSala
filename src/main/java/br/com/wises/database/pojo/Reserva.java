@@ -17,20 +17,20 @@ import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
-@Table(name = "alocacao_sala")
+@Table(name = "reserva")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "AlocacaoSala.findAll", query = "SELECT a FROM AlocacaoSala a"),
-    @NamedQuery(name = "AlocacaoSala.findById", query = "SELECT a FROM AlocacaoSala a WHERE a.id = :id"),
-    @NamedQuery(name = "AlocacaoSala.findByIdSala", query = "SELECT a FROM AlocacaoSala a WHERE a.idSala = :idSala"),
-    @NamedQuery(name = "AlocacaoSala.findByIdUsuario", query = "SELECT a FROM AlocacaoSala a WHERE a.idUsuario = :idUsuario"),
-    @NamedQuery(name = "AlocacaoSala.findByDataHoraInicio", query = "SELECT a FROM AlocacaoSala a WHERE a.dataHoraInicio = :dataHoraInicio"),
-    @NamedQuery(name = "AlocacaoSala.findByDataHoraFim", query = "SELECT a FROM AlocacaoSala a WHERE a.dataHoraFim = :dataHoraFim"),
-    @NamedQuery(name = "AlocacaoSala.findByDescricao", query = "SELECT a FROM AlocacaoSala a WHERE a.descricao = :descricao"),
-    @NamedQuery(name = "AlocacaoSala.findByDataCriacao", query = "SELECT a FROM AlocacaoSala a WHERE a.dataCriacao = :dataCriacao"),
-    @NamedQuery(name = "AlocacaoSala.findByDataAlteracao", query = "SELECT a FROM AlocacaoSala a WHERE a.dataAlteracao = :dataAlteracao"),
-    @NamedQuery(name = "AlocacaoSala.findByAtivo", query = "SELECT a FROM AlocacaoSala a WHERE a.ativo = :ativo")})
-public class AlocacaoSala implements Serializable {
+    @NamedQuery(name = "Reserva.findAll", query = "SELECT a FROM Reserva a"),
+    @NamedQuery(name = "Reserva.findById", query = "SELECT a FROM Reserva a WHERE a.id = :id"),
+    @NamedQuery(name = "Reserva.findByIdSala", query = "SELECT a FROM Reserva a WHERE a.idSala = :idSala"),
+    @NamedQuery(name = "Reserva.findByIdUsuario", query = "SELECT a FROM Reserva a WHERE a.idUsuario = :idUsuario"),
+    @NamedQuery(name = "Reserva.findByDataHoraInicio", query = "SELECT a FROM Reserva a WHERE a.dataHoraInicio = :dataHoraInicio"),
+    @NamedQuery(name = "Reserva.findByDataHoraFim", query = "SELECT a FROM Reserva a WHERE a.dataHoraFim = :dataHoraFim"),
+    @NamedQuery(name = "Reserva.findByDescricao", query = "SELECT a FROM Reserva a WHERE a.descricao = :descricao"),
+    @NamedQuery(name = "Reserva.findByDataCriacao", query = "SELECT a FROM Reserva a WHERE a.dataCriacao = :dataCriacao"),
+    @NamedQuery(name = "Reserva.findByDataAlteracao", query = "SELECT a FROM Reserva a WHERE a.dataAlteracao = :dataAlteracao"),
+    @NamedQuery(name = "Reserva.findByAtivo", query = "SELECT a FROM Reserva a WHERE a.ativo = :ativo")})
+public class Reserva implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -58,12 +58,12 @@ public class AlocacaoSala implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date dataAlteracao;
     @Column(name = "ativo")
-    private Short ativo;
+    private boolean ativo;
 
-    public AlocacaoSala() {
+    public Reserva() {
     }
 
-    public AlocacaoSala(Integer id) {
+    public Reserva(Integer id) {
         this.id = id;
     }
 
@@ -131,17 +131,17 @@ public class AlocacaoSala implements Serializable {
         this.dataAlteracao = dataAlteracao;
     }
 
-    public Short getAtivo() {
+    public boolean getAtivo() {
         return ativo;
     }
 
-    public void setAtivo(Short ativo) {
+    public void setAtivo(boolean ativo) {
         this.ativo = ativo;
     }
 
     @Override
     public String toString() {
-        return "br.com.wises.database.pojo.AlocacaoSala[ id=" + id + " ]";
+        return "br.com.wises.database.pojo.Reserva[ id=" + id + " ]";
     }
     
 }

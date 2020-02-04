@@ -38,7 +38,6 @@ public class UsuarioService {
 //        }
 //        return null;
 //    }
-
     @GET
     @Path("getByEmail")
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
@@ -76,6 +75,27 @@ public class UsuarioService {
         } else {
             return "Token Inválido";
         }
+    }
+
+    @GET
+    @Path("loginV2")
+    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    public Usuario authenticationV2(
+            @HeaderParam("email") String email,
+            @HeaderParam("password") String password,
+            @HeaderParam("authorization") String authorization) {
+        if (authorization != null && authorization.equals("secret")) {
+            Usuario user = EManager.getInstance().getDbAccessor().getCredencials(email, password);
+            if (user != null) {
+                user.getIdOrganizacao().setUsuarioCollection(null);
+                user.getIdOrganizacao().setSalaCollection(null);
+                user.setSenha(null);
+                return user;
+            }
+        } else {
+            return null;
+        }
+        return null;
     }
 
     @POST

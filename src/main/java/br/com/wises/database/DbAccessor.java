@@ -1,6 +1,6 @@
 package br.com.wises.database;
 
-import br.com.wises.database.pojo.AlocacaoSala;
+import br.com.wises.database.pojo.Reserva;
 import br.com.wises.database.pojo.Organizacao;
 import br.com.wises.database.pojo.Sala;
 import br.com.wises.database.pojo.Usuario;
@@ -18,18 +18,6 @@ public class DbAccessor {
         this.operationLock = operationLock;
     }
 
-    public List<Usuario> getAllUsuarios() {
-        return this.manager.createNamedQuery("Usuario.findAll").getResultList();
-    }
-
-    public Usuario getUserById(int id) {
-        try {
-            return (Usuario) this.manager.createNamedQuery("Usuario.findById").setParameter("id", id).getSingleResult();
-        } catch (NoResultException e) {
-            return null;
-        }
-    }
-
     public Usuario getUserByEmail(String email) {
         try {
             return (Usuario) this.manager.createNamedQuery("Usuario.findByEmail").setParameter("email", email).getSingleResult();
@@ -44,10 +32,6 @@ public class DbAccessor {
         } catch (NoResultException e) {
             return null;
         }
-    }
-
-    public List<Organizacao> getAllOrganizacoes() {
-        return this.manager.createNamedQuery("Organizacao.findAll").getResultList();
     }
 
     public Organizacao getOrganizacaoById(int id) {
@@ -74,10 +58,6 @@ public class DbAccessor {
         }
     }
 
-    public List<Sala> getAllSalas() {
-        return this.manager.createNamedQuery("Sala.findAll").getResultList();
-    }
-
     public List<Sala> getSalasByOrganizacaoId(int id) {
         try {
             return this.manager.createNamedQuery("Sala.findByOrganizacaoId").setParameter("idOrganizacao", id).getResultList();
@@ -86,8 +66,20 @@ public class DbAccessor {
         }
     }
 
-    public List<AlocacaoSala> getAllAlocacaoSalas() {
-        return this.manager.createNamedQuery("AlocacaoSala.findAll").getResultList();
+    public List<Reserva> getReservasByIdSala(int idSala) {
+        try {
+            return this.manager.createNamedQuery("Reserva.findByIdSala").setParameter("idSala", idSala).getResultList();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+
+    public void novaReserva(Reserva reserva) {
+        synchronized (this.operationLock) {
+            this.manager.getTransaction().begin();
+            this.manager.persist(reserva);
+            this.manager.getTransaction().commit();
+        }
     }
 
     public void novoUsuario(Usuario usuario) {
