@@ -41,7 +41,7 @@ CREATE TABLE `usuario` (
  FOREIGN KEY (`id_organizacao`) REFERENCES `organizacao` (`id`)
 );
 
-CREATE TABLE `alocacao_sala` (
+CREATE TABLE `reserva` (
  `id` int(11) NOT NULL AUTO_INCREMENT,
  `id_sala` int(11) DEFAULT NULL,
  `id_usuario` int(11) DEFAULT NULL,
