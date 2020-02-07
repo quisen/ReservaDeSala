@@ -7,6 +7,8 @@ import br.com.wises.database.pojo.Usuario;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
+import org.eclipse.persistence.config.HintValues;
+import org.eclipse.persistence.config.QueryHints;
 
 public class DbAccessor {
 
@@ -20,7 +22,7 @@ public class DbAccessor {
 
     public Usuario getUserByEmail(String email) {
         try {
-            return (Usuario) this.manager.createNamedQuery("Usuario.findByEmail").setParameter("email", email).getSingleResult();
+            return (Usuario) this.manager.createNamedQuery("Usuario.findByEmail").setParameter("email", email).setHint(QueryHints.REFRESH, HintValues.TRUE).getSingleResult();
         } catch (NoResultException e) {
             return null;
         }
@@ -28,7 +30,7 @@ public class DbAccessor {
 
     public Usuario getCredencials(String email, String senha) {
         try {
-            return (Usuario) this.manager.createNamedQuery("Usuario.findByEmailAndPassword").setParameter("email", email).setParameter("senha", senha).getSingleResult();
+            return (Usuario) this.manager.createNamedQuery("Usuario.findByEmailAndPassword").setParameter("email", email).setParameter("senha", senha).setHint(QueryHints.REFRESH, HintValues.TRUE).getSingleResult();
         } catch (NoResultException e) {
             return null;
         }
@@ -36,7 +38,7 @@ public class DbAccessor {
 
     public Organizacao getOrganizacaoById(int id) {
         try {
-            return (Organizacao) this.manager.createNamedQuery("Organizacao.findById").setParameter("id", id).getSingleResult();
+            return (Organizacao) this.manager.createNamedQuery("Organizacao.findById").setParameter("id", id).setHint(QueryHints.REFRESH, HintValues.TRUE).getSingleResult();
         } catch (NoResultException e) {
             return null;
         }
@@ -44,7 +46,7 @@ public class DbAccessor {
 
     public Organizacao getOrganizacaoByDominio(String dominio) {
         try {
-            return (Organizacao) this.manager.createNamedQuery("Organizacao.findDominioLike").setParameter("dominio", dominio).getSingleResult();
+            return (Organizacao) this.manager.createNamedQuery("Organizacao.findDominioLike").setParameter("dominio", dominio).setHint(QueryHints.REFRESH, HintValues.TRUE).getSingleResult();
         } catch (NoResultException e) {
             return null;
         }
@@ -52,7 +54,7 @@ public class DbAccessor {
 
     public List<Organizacao> getOrganizacoesByDominio(String dominio) {
         try {
-            return this.manager.createNamedQuery("Organizacao.findDominioLike").setParameter("dominio", dominio).getResultList();
+            return this.manager.createNamedQuery("Organizacao.findDominioLike").setParameter("dominio", dominio).setHint(QueryHints.REFRESH, HintValues.TRUE).getResultList();
         } catch (NoResultException e) {
             return null;
         }
@@ -60,7 +62,7 @@ public class DbAccessor {
 
     public List<Sala> getSalasByOrganizacaoId(int id) {
         try {
-            return this.manager.createNamedQuery("Sala.findByOrganizacaoId").setParameter("idOrganizacao", id).getResultList();
+            return this.manager.createNamedQuery("Sala.findByOrganizacaoId").setParameter("idOrganizacao", id).setHint(QueryHints.REFRESH, HintValues.TRUE).getResultList();
         } catch (NoResultException e) {
             return null;
         }
@@ -68,7 +70,7 @@ public class DbAccessor {
 
     public List<Reserva> getReservasByIdSala(int idSala) {
         try {
-            return this.manager.createNamedQuery("Reserva.findByIdSala").setParameter("idSala", idSala).getResultList();
+            return this.manager.createNamedQuery("Reserva.findByIdSala").setParameter("idSala", idSala).setHint(QueryHints.REFRESH, HintValues.TRUE).getResultList();
         } catch (NoResultException e) {
             return null;
         }
@@ -76,7 +78,7 @@ public class DbAccessor {
 
     public List<Reserva> getReservasByIdUsuario(int idUsuario) {
         try {
-            return this.manager.createNamedQuery("Reserva.findByIdUsuario").setParameter("idUsuario", idUsuario).getResultList();
+            return this.manager.createNamedQuery("Reserva.findByIdUsuario").setParameter("idUsuario", idUsuario).setHint(QueryHints.REFRESH, HintValues.TRUE).getResultList();
         } catch (NoResultException e) {
             return null;
         }
