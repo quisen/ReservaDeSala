@@ -27,6 +27,14 @@ public class DbAccessor {
             return null;
         }
     }
+    
+        public Usuario getUserById(int id) {
+        try {
+            return (Usuario) this.manager.createNamedQuery("Usuario.findById").setParameter("id", id).setHint(QueryHints.REFRESH, HintValues.TRUE).getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
 
     public Usuario getCredencials(String email, String senha) {
         try {
