@@ -42,6 +42,9 @@ public class Reserva implements Serializable {
     private Integer idSala;
     @Column(name = "id_usuario")
     private Integer idUsuario;
+    @Size(max = 45)
+    @Column(name = "nome_organizador")
+    private String nomeOrganizador;
     @Column(name = "data_hora_inicio")
     @Temporal(TemporalType.TIMESTAMP)
     private Date dataHoraInicio;
@@ -139,9 +142,17 @@ public class Reserva implements Serializable {
         this.ativo = ativo;
     }
 
+    public String getNomeOrganizador() {
+        return nomeOrganizador;
+    }
+
+    public void setNomeOrganizador(String nomeOrganizador) {
+        this.nomeOrganizador = nomeOrganizador;
+    }
+    
     @Override
     public String toString() {
         return "br.com.wises.database.pojo.Reserva[ id=" + id + " ]";
     }
-    
+
 }

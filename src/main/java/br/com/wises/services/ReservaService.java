@@ -72,7 +72,7 @@ public class ReservaService {
 
                     Usuario user = EManager.getInstance().getDbAccessor().getUserById(idUsuario);
                     novaReserva.setIdUsuario(user.getId());
-
+                    novaReserva.setNomeOrganizador(user.getNome());
                     novaReserva.setIdSala(idSala);
                     novaReserva.setDescricao(descricao);
                     novaReserva.setDataHoraInicio(dataHoraInicio);

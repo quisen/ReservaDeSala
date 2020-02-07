@@ -45,6 +45,7 @@ CREATE TABLE `reserva` (
  `id` int(11) NOT NULL AUTO_INCREMENT,
  `id_sala` int(11) DEFAULT NULL,
  `id_usuario` int(11) DEFAULT NULL,
+ `nome_organizador` VARCHAR(45) DEFAULT NULL,
  `data_hora_inicio` DATETIME DEFAULT NULL,
  `data_hora_fim` DATETIME DEFAULT NULL,
  `descricao` VARCHAR(45) DEFAULT NULL,
