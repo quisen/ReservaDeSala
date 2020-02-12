@@ -6,8 +6,9 @@ import javax.persistence.Persistence;
 
 public class EManager implements java.io.Serializable {
 
-    // Para inicializar corertamente o Emanager, na hora de configurar a PU
-    // colocar ?useTimezone=true&serverTimezone=UTC na conexão
+    /* Para inicializar corretamente o Emanager, na hora de configurar a PU
+    colocar ?useTimezone=true&serverTimezone=UTC na conexão */
+    
     private static final Object emLock = new Object();
     private static EManager instance = null;
 

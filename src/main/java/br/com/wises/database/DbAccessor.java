@@ -20,6 +20,7 @@ public class DbAccessor {
         this.operationLock = operationLock;
     }
 
+    //--------------- USUÁRIO ---------------//
     public Usuario getUserByEmail(String email) {
         try {
             return (Usuario) this.manager.createNamedQuery("Usuario.findByEmail").setParameter("email", email).setHint(QueryHints.REFRESH, HintValues.TRUE).getSingleResult();
@@ -27,8 +28,8 @@ public class DbAccessor {
             return null;
         }
     }
-    
-        public Usuario getUserById(int id) {
+
+    public Usuario getUserById(int id) {
         try {
             return (Usuario) this.manager.createNamedQuery("Usuario.findById").setParameter("id", id).setHint(QueryHints.REFRESH, HintValues.TRUE).getSingleResult();
         } catch (NoResultException e) {
@@ -44,6 +45,15 @@ public class DbAccessor {
         }
     }
 
+    public void novoUsuario(Usuario usuario) {
+        synchronized (this.operationLock) {
+            this.manager.getTransaction().begin();
+            this.manager.persist(usuario);
+            this.manager.getTransaction().commit();
+        }
+    }
+
+    //--------------- ORGANIZAÇÃO ---------------//
     public Organizacao getOrganizacaoById(int id) {
         try {
             return (Organizacao) this.manager.createNamedQuery("Organizacao.findById").setParameter("id", id).setHint(QueryHints.REFRESH, HintValues.TRUE).getSingleResult();
@@ -76,6 +86,7 @@ public class DbAccessor {
         }
     }
 
+    //--------------- RESERVA ---------------//
     public List<Reserva> getReservasByIdSala(int idSala) {
         try {
             return this.manager.createNamedQuery("Reserva.findByIdSala").setParameter("idSala", idSala).setHint(QueryHints.REFRESH, HintValues.TRUE).getResultList();
@@ -100,27 +111,11 @@ public class DbAccessor {
         }
     }
 
-    public void novoUsuario(Usuario usuario) {
+    public void modificaReserva(Reserva reserva) {
         synchronized (this.operationLock) {
             this.manager.getTransaction().begin();
-            this.manager.persist(usuario);
+            this.manager.merge(reserva);
             this.manager.getTransaction().commit();
         }
     }
-//
-//    public void modificaUsuario(Usuario usuario) {
-//        synchronized (this.operationLock) {
-//            this.manager.getTransaction().begin();
-//            this.manager.merge(usuario);
-//            this.manager.getTransaction().commit();
-//        }
-//    }
-//
-//    public void excluirUsuario(Usuario usuario) {
-//        synchronized (this.operationLock) {
-//            this.manager.getTransaction().begin();
-//            this.manager.remove(usuario);
-//            this.manager.getTransaction().commit();
-//        }
-//    }
 }

@@ -2,42 +2,22 @@ package br.com.wises.services;
 
 import br.com.wises.database.EManager;
 import br.com.wises.database.pojo.Organizacao;
+import br.com.wises.database.pojo.Status;
 import br.com.wises.database.pojo.Usuario;
 import java.nio.charset.Charset;
 import java.util.Base64;
-import java.util.List;
 import javax.ws.rs.Produces;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import org.json.JSONObject;
 
 @Path("usuario")
 public class UsuarioService {
 
-// Esse aqui fica só de exemplo pra mostrar como faz pra pegar o parâmetro pelo path do request
-//    @GET
-//    @Path("/{email}")
-//    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
-//    public Usuario getUserJson(
-//            @PathParam("email") String email,
-//            @HeaderParam("authorization") String authorization) {
-//        if (authorization != null && authorization.equals("secret")) {
-//            Usuario user = EManager.getInstance().getDbAccessor().getUserByEmail(email);
-//            if (user != null) {
-//                user.getIdOrganizacao().setUsuarioCollection(null);
-//                user.getIdOrganizacao().setSalaCollection(null);
-//                user.setSenha(null);
-//                return user;
-//            }
-//        } else {
-//            return null;
-//        }
-//        return null;
-//    }
     @GET
     @Path("getByEmail")
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
@@ -61,22 +41,35 @@ public class UsuarioService {
     @GET
     @Path("login")
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
-    public String authentication(
+    public Response authentication(
             @HeaderParam("email") String email,
             @HeaderParam("password") String password,
             @HeaderParam("authorization") String authorization) {
         if (authorization != null && authorization.equals("secret")) {
             Usuario user = EManager.getInstance().getDbAccessor().getCredencials(email, password);
             if (user != null) {
-                return "Login efetuado com sucesso!";
+                user.getIdOrganizacao().setUsuarioCollection(null);
+                user.getIdOrganizacao().setSalaCollection(null);
+//                user.getIdOrganizacao().setDataAlteracao(null);
+//                user.getIdOrganizacao().setDataCriacao(null);
+                user.getIdOrganizacao().setAtivo(null);
+                user.setSenha(null);
+                return Response.ok(user).build();
             } else {
-                return "Credenciais Inválidas!";
+                return Response
+                        .status(Response.Status.NOT_FOUND)
+                        .entity(new Status("Usuário não encontrado"))
+                        .type(MediaType.APPLICATION_JSON)
+                        .build();
             }
         } else {
-            return "Token Inválido";
+            return Response
+                    .status(Response.Status.FORBIDDEN)
+                    .entity(new Status("Request inválido"))
+                    .build();
         }
     }
-
+    
     @GET
     @Path("loginV2")
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
@@ -162,3 +155,24 @@ public class UsuarioService {
         }
     }
 }
+
+// Esse aqui fica só de exemplo pra mostrar como faz pra pegar o parâmetro pelo path do request
+//    @GET
+//    @Path("/{email}")
+//    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+//    public Usuario getUserJson(
+//            @PathParam("email") String email,
+//            @HeaderParam("authorization") String authorization) {
+//        if (authorization != null && authorization.equals("secret")) {
+//            Usuario user = EManager.getInstance().getDbAccessor().getUserByEmail(email);
+//            if (user != null) {
+//                user.getIdOrganizacao().setUsuarioCollection(null);
+//                user.getIdOrganizacao().setSalaCollection(null);
+//                user.setSenha(null);
+//                return user;
+//            }
+//        } else {
+//            return null;
+//        }
+//        return null;
+//    }
