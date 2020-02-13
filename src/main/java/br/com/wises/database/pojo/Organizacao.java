@@ -1,6 +1,5 @@
 package br.com.wises.database.pojo;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
@@ -63,7 +62,6 @@ public class Organizacao implements Serializable {
     
     @Column(name = "dataCriacao")
     @Temporal(TemporalType.TIMESTAMP)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern= "yyyy-MM-dd")
     private Date dataCriacao;
     @Column(name = "dataAlteracao")
     @Temporal(TemporalType.TIMESTAMP)
