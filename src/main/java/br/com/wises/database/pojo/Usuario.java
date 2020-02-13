@@ -45,7 +45,6 @@ public class Usuario implements Serializable {
     @Column(name = "senha")
     private String senha;
     @JoinColumn(name = "id_organizacao", referencedColumnName = "id")
-    @ManyToOne
     private Organizacao idOrganizacao;
 
     public Usuario() {

@@ -1,5 +1,6 @@
 package br.com.wises.services;
 
+import br.com.wises.database.DbAccessor;
 import br.com.wises.database.EManager;
 import br.com.wises.database.pojo.Organizacao;
 import br.com.wises.database.pojo.Status;
@@ -25,7 +26,7 @@ public class UsuarioService {
             @HeaderParam("email") String email,
             @HeaderParam("authorization") String authorization) {
         if (authorization != null && authorization.equals("secret")) {
-            Usuario user = EManager.getInstance().getDbAccessor().getUserByEmail(email);
+            Usuario user = DbAccessor.getUserByEmail(email);
             if (user != null) {
                 user.getIdOrganizacao().setUsuarioCollection(null);
                 user.getIdOrganizacao().setSalaCollection(null);
@@ -46,7 +47,7 @@ public class UsuarioService {
             @HeaderParam("password") String password,
             @HeaderParam("authorization") String authorization) {
         if (authorization != null && authorization.equals("secret")) {
-            Usuario user = EManager.getInstance().getDbAccessor().getCredencials(email, password);
+            Usuario user = DbAccessor.getCredencials(email, password);
             if (user != null) {
                 user.getIdOrganizacao().setUsuarioCollection(null);
                 user.getIdOrganizacao().setSalaCollection(null);
@@ -78,7 +79,7 @@ public class UsuarioService {
             @HeaderParam("password") String password,
             @HeaderParam("authorization") String authorization) {
         if (authorization != null && authorization.equals("secret")) {
-            Usuario user = EManager.getInstance().getDbAccessor().getCredencials(email, password);
+            Usuario user = DbAccessor.getCredencials(email, password);
             if (user != null) {
                 user.getIdOrganizacao().setUsuarioCollection(null);
                 user.getIdOrganizacao().setSalaCollection(null);
@@ -123,13 +124,13 @@ public class UsuarioService {
                     return "Erro ao criar conta, os dados enviados estão incompletos";
                 }
 
-                if (EManager.getInstance().getDbAccessor().getUserByEmail(email) != null) {
+                if (DbAccessor.getUserByEmail(email) != null) {
                     return "O email informado já está cadastrado";
                 }
 
                 Organizacao organizacao = new Organizacao();
                 try {
-                    organizacao = EManager.getInstance().getDbAccessor().getOrganizacaoById(idOrganizacao);
+                    organizacao = DbAccessor.getOrganizacaoById(idOrganizacao);
                     if (organizacao == null) {
                         return "Erro ao cadastrar usuário, a organização informada não existe";
                     }
@@ -142,7 +143,7 @@ public class UsuarioService {
                 novoUsuario.setSenha(senha);
                 novoUsuario.setIdOrganizacao(organizacao);
 
-                EManager.getInstance().getDbAccessor().novoUsuario(novoUsuario);
+                DbAccessor.novoUsuario(novoUsuario);
 
                 return "Usuário criado com sucesso";
             } catch (Exception e) {

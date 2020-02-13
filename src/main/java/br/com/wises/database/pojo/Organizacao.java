@@ -59,7 +59,6 @@ public class Organizacao implements Serializable {
     @Size(max = 64)
     @Column(name = "dominio")
     private String dominio;
-    
     @Column(name = "dataCriacao")
     @Temporal(TemporalType.TIMESTAMP)
     private Date dataCriacao;

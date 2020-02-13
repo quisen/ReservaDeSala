@@ -83,7 +83,6 @@ public class Sala implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date dataAlteracao;
     @JoinColumn(name = "id_organizacao", referencedColumnName = "id")
-    @ManyToOne
     private Organizacao idOrganizacao;
 
     public Sala() {

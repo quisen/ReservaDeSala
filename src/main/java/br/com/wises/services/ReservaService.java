@@ -1,5 +1,6 @@
 package br.com.wises.services;
 
+import br.com.wises.database.DbAccessor;
 import br.com.wises.database.EManager;
 import br.com.wises.database.pojo.Reserva;
 import br.com.wises.database.pojo.Usuario;
@@ -26,7 +27,7 @@ public class ReservaService {
             @HeaderParam("id_sala") int idSala,
             @HeaderParam("authorization") String authorization) {
         if (authorization != null && authorization.equals("secret")) {
-            List<Reserva> lista = EManager.getInstance().getDbAccessor().getReservasByIdSala(idSala);
+            List<Reserva> lista = DbAccessor.getReservasByIdSala(idSala);
             return lista;
         } else {
             return null;
@@ -40,7 +41,7 @@ public class ReservaService {
             @HeaderParam("id_usuario") int idUsuario,
             @HeaderParam("authorization") String authorization) {
         if (authorization != null && authorization.equals("secret")) {
-            List<Reserva> lista = EManager.getInstance().getDbAccessor().getReservasByIdUsuario(idUsuario);
+            List<Reserva> lista = DbAccessor.getReservasByIdUsuario(idUsuario);
             return lista;
         } else {
             return null;
@@ -70,7 +71,7 @@ public class ReservaService {
                     dataHoraInicio = new Date(userObj.getLong("data_hora_inicio"));
                     dataHoraFim = new Date(userObj.getLong("data_hora_fim"));
 
-                    Usuario user = EManager.getInstance().getDbAccessor().getUserById(idUsuario);
+                    Usuario user = DbAccessor.getUserById(idUsuario);
                     novaReserva.setIdUsuario(user.getId());
                     novaReserva.setNomeOrganizador(user.getNome());
                     novaReserva.setIdSala(idSala);
@@ -88,7 +89,7 @@ public class ReservaService {
                     novaReserva.setDataCriacao(date);
                     novaReserva.setDataAlteracao(date);
 
-                    EManager.getInstance().getDbAccessor().novaReserva(novaReserva);
+                    DbAccessor.novaReserva(novaReserva);
                     return "Reserva realizada com sucesso";
                 } else {
                     return "A reserva não foi realizada";

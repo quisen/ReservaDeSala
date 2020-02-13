@@ -1,6 +1,6 @@
 package br.com.wises.services;
 
-import br.com.wises.database.EManager;
+import br.com.wises.database.DbAccessor;
 import br.com.wises.database.pojo.Organizacao;
 import java.util.List;
 import javax.ws.rs.Produces;
@@ -19,7 +19,7 @@ public class OrganizacaoService {
             @HeaderParam("authorization") String authorization,
             @HeaderParam("dominio") String dominio) {
         if (authorization != null && authorization.equals("secret")) {
-            List<Organizacao> lista = EManager.getInstance().getDbAccessor().getOrganizacoesByDominio(dominio);
+            List<Organizacao> lista = DbAccessor.getOrganizacoesByDominio(dominio);
             for (int i = 0; i < lista.size(); i++) {
                 lista.get(i).setUsuarioCollection(null);
                 lista.get(i).setSalaCollection(null);
