@@ -18,24 +18,33 @@ public class DbAccessor {
     //--------------- USUÁRIO ---------------//
     public static Usuario getUserByEmail(String email) {
         try {
-            return (Usuario) EManager.getInstance().createNamedQuery("Usuario.findByEmail").setParameter("email", email).setHint(QueryHints.REFRESH, HintValues.TRUE).getSingleResult();
+            Usuario u = (Usuario) EManager.getInstance().createNamedQuery("Usuario.findByEmail").setParameter("email", email).setHint(QueryHints.REFRESH, HintValues.TRUE).getSingleResult();
+            clear();
+            return u;
         } catch (NoResultException e) {
+            clear();
             return null;
         }
     }
 
     public static Usuario getUserById(int id) {
         try {
-            return (Usuario) EManager.getInstance().createNamedQuery("Usuario.findById").setParameter("id", id).setHint(QueryHints.REFRESH, HintValues.TRUE).getSingleResult();
+            Usuario u = (Usuario) EManager.getInstance().createNamedQuery("Usuario.findById").setParameter("id", id).setHint(QueryHints.REFRESH, HintValues.TRUE).getSingleResult();
+            clear();
+            return u;
         } catch (NoResultException e) {
+            clear();
             return null;
         }
     }
 
     public static Usuario getCredencials(String email, String senha) {
         try {
-            return (Usuario) EManager.getInstance().createNamedQuery("Usuario.findByEmailAndPassword").setParameter("email", email).setParameter("senha", senha).setHint(QueryHints.REFRESH, HintValues.TRUE).getSingleResult();
+            Usuario u = (Usuario) EManager.getInstance().createNamedQuery("Usuario.findByEmailAndPassword").setParameter("email", email).setParameter("senha", senha).setHint(QueryHints.REFRESH, HintValues.TRUE).getSingleResult();
+            clear();
+            return u;
         } catch (NoResultException e) {
+            clear();
             return null;
         }
     }
@@ -45,9 +54,11 @@ public class DbAccessor {
             EManager.getInstance().getTransaction().begin();
             EManager.getInstance().persist(usuario);
             EManager.getInstance().getTransaction().commit();
+            clear();
         } catch (Exception e) {
             if (EManager.getInstance().getTransaction().isActive()) {
                 EManager.getInstance().getTransaction().rollback();
+                clear();
             }
         }
     }
@@ -55,32 +66,44 @@ public class DbAccessor {
     //--------------- ORGANIZAÇÃO ---------------//
     public static Organizacao getOrganizacaoById(int id) {
         try {
-            return (Organizacao) EManager.getInstance().createNamedQuery("Organizacao.findById").setParameter("id", id).setHint(QueryHints.REFRESH, HintValues.TRUE).getSingleResult();
+            Organizacao o = (Organizacao) EManager.getInstance().createNamedQuery("Organizacao.findById").setParameter("id", id).setHint(QueryHints.REFRESH, HintValues.TRUE).getSingleResult();
+            clear();
+            return o;
         } catch (NoResultException e) {
+            clear();
             return null;
         }
     }
 
     public static Organizacao getOrganizacaoByDominio(String dominio) {
         try {
-            return (Organizacao) EManager.getInstance().createNamedQuery("Organizacao.findDominioLike").setParameter("dominio", dominio).setHint(QueryHints.REFRESH, HintValues.TRUE).getSingleResult();
+            Organizacao o = (Organizacao) EManager.getInstance().createNamedQuery("Organizacao.findDominioLike").setParameter("dominio", dominio).setHint(QueryHints.REFRESH, HintValues.TRUE).getSingleResult();
+            clear();
+            return o;
         } catch (NoResultException e) {
+            clear();
             return null;
         }
     }
 
     public static List<Organizacao> getOrganizacoesByDominio(String dominio) {
         try {
-            return EManager.getInstance().createNamedQuery("Organizacao.findDominioLike").setParameter("dominio", dominio).setHint(QueryHints.REFRESH, HintValues.TRUE).getResultList();
+            List<Organizacao> l = EManager.getInstance().createNamedQuery("Organizacao.findDominioLike").setParameter("dominio", dominio).setHint(QueryHints.REFRESH, HintValues.TRUE).getResultList();
+            clear();
+            return l;
         } catch (NoResultException e) {
+            clear();
             return null;
         }
     }
 
     public static List<Sala> getSalasByOrganizacaoId(int id) {
         try {
-            return EManager.getInstance().createNamedQuery("Sala.findByOrganizacaoId").setParameter("idOrganizacao", id).setHint(QueryHints.REFRESH, HintValues.TRUE).getResultList();
+            List<Sala> l = EManager.getInstance().createNamedQuery("Sala.findByOrganizacaoId").setParameter("idOrganizacao", id).setHint(QueryHints.REFRESH, HintValues.TRUE).getResultList();
+            clear();
+            return l;
         } catch (NoResultException e) {
+            clear();
             return null;
         }
     }
@@ -88,16 +111,22 @@ public class DbAccessor {
     //--------------- RESERVA ---------------//
     public static List<Reserva> getReservasByIdSala(int idSala) {
         try {
-            return EManager.getInstance().createNamedQuery("Reserva.findByIdSala").setParameter("idSala", idSala).setHint(QueryHints.REFRESH, HintValues.TRUE).getResultList();
+            List<Reserva> l = EManager.getInstance().createNamedQuery("Reserva.findByIdSala").setParameter("idSala", idSala).setHint(QueryHints.REFRESH, HintValues.TRUE).getResultList();
+            clear();
+            return l;
         } catch (NoResultException e) {
+            clear();
             return null;
         }
     }
 
     public static List<Reserva> getReservasByIdUsuario(int idUsuario) {
         try {
-            return EManager.getInstance().createNamedQuery("Reserva.findByIdUsuario").setParameter("idUsuario", idUsuario).setHint(QueryHints.REFRESH, HintValues.TRUE).getResultList();
+            List<Reserva> l = EManager.getInstance().createNamedQuery("Reserva.findByIdUsuario").setParameter("idUsuario", idUsuario).setHint(QueryHints.REFRESH, HintValues.TRUE).getResultList();
+            clear();
+            return l;
         } catch (NoResultException e) {
+            clear();
             return null;
         }
     }
@@ -107,9 +136,11 @@ public class DbAccessor {
             EManager.getInstance().getTransaction().begin();
             EManager.getInstance().persist(reserva);
             EManager.getInstance().getTransaction().commit();
+            clear();
         } catch (Exception e) {
             if (EManager.getInstance().getTransaction().isActive()) {
                 EManager.getInstance().getTransaction().rollback();
+                clear();
             }
         }
     }
@@ -119,10 +150,16 @@ public class DbAccessor {
             EManager.getInstance().getTransaction().begin();
             EManager.getInstance().merge(reserva);
             EManager.getInstance().getTransaction().commit();
+            clear();
         } catch (Exception e) {
             if (EManager.getInstance().getTransaction().isActive()) {
                 EManager.getInstance().getTransaction().rollback();
+                clear();
             }
         }
+    }
+
+    public static void clear() {
+        EManager.getInstance().clear();
     }
 }
