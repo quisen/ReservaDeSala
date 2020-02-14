@@ -8,6 +8,6 @@ CREATE EVENT verificar_reservas_ativas
         STARTS CURDATE()
         ON COMPLETION PRESERVE ENABLE DO
             BEGIN
-				UPDATE reserva_sala.reserva SET ativo = 0 WHERE data_hora_fim < NOW();
+                UPDATE reserva_sala.reserva SET ativo = 0 WHERE data_hora_fim < NOW();
             END 
 | delimiter ;
