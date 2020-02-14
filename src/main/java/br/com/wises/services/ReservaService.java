@@ -35,7 +35,7 @@ public class ReservaService {
                 List<Reserva> listaReservasSingleSala = new ArrayList<>();
                 listaReservasSingleSala = DbAccessor.getReservasByIdSala(salas.get(i).getId());
                 for (int j = 0; j < listaReservasSingleSala.size(); j++) {
-                    listaReservas.add(listaReservasSingleSala.get(i));
+                    listaReservas.add(listaReservasSingleSala.get(j));
                 }
             }
 
