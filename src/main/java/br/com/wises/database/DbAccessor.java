@@ -4,6 +4,7 @@ import br.com.wises.database.pojo.Reserva;
 import br.com.wises.database.pojo.Organizacao;
 import br.com.wises.database.pojo.Sala;
 import br.com.wises.database.pojo.Usuario;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.NoResultException;
 import org.eclipse.persistence.config.HintValues;
@@ -117,6 +118,19 @@ public class DbAccessor {
         } catch (NoResultException e) {
             clear();
             return null;
+        }
+    }
+
+    public static boolean isReservaDisponivel(int idSala, Date dataHoraInicio, Date dataHoraFim) {
+        try {
+            List<Reserva> l = EManager.getInstance().createNamedQuery("Reserva.findDisponibilidade").setParameter("idSala", idSala).setParameter("dataHoraInicio", dataHoraInicio).setParameter("dataHoraFim", dataHoraFim).setHint(QueryHints.REFRESH, HintValues.TRUE).getResultList();
+            System.out.println("Tamanho da lista retornada: " + l.size());
+            clear();
+            return !(l.size() > 0);
+        } catch (Exception e) {
+            clear();
+            e.printStackTrace();
+            return false;
         }
     }
 

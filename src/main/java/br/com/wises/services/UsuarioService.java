@@ -5,6 +5,7 @@ import br.com.wises.database.EManager;
 import br.com.wises.database.pojo.Organizacao;
 import br.com.wises.database.pojo.Status;
 import br.com.wises.database.pojo.Usuario;
+import com.google.gson.Gson;
 import java.nio.charset.Charset;
 import java.util.Base64;
 import javax.ws.rs.Produces;
@@ -28,8 +29,6 @@ public class UsuarioService {
         if (authorization != null && authorization.equals("secret")) {
             Usuario user = DbAccessor.getUserByEmail(email);
             if (user != null) {
-                user.getIdOrganizacao().setUsuarioCollection(null);
-                user.getIdOrganizacao().setSalaCollection(null);
                 user.setSenha(null);
                 return user;
             }
@@ -49,11 +48,6 @@ public class UsuarioService {
         if (authorization != null && authorization.equals("secret")) {
             Usuario user = DbAccessor.getCredencials(email, password);
             if (user != null) {
-                user.getIdOrganizacao().setUsuarioCollection(null);
-                user.getIdOrganizacao().setSalaCollection(null);
-//                user.getIdOrganizacao().setDataAlteracao(null);
-//                user.getIdOrganizacao().setDataCriacao(null);
-                user.getIdOrganizacao().setAtivo(null);
                 user.setSenha(null);
                 return Response.ok(user).build();
             } else {
@@ -81,8 +75,6 @@ public class UsuarioService {
         if (authorization != null && authorization.equals("secret")) {
             Usuario user = DbAccessor.getCredencials(email, password);
             if (user != null) {
-                user.getIdOrganizacao().setUsuarioCollection(null);
-                user.getIdOrganizacao().setSalaCollection(null);
                 user.setSenha(null);
                 return user;
             }

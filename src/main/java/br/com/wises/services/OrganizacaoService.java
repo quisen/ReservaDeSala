@@ -21,8 +21,8 @@ public class OrganizacaoService {
         if (authorization != null && authorization.equals("secret")) {
             List<Organizacao> lista = DbAccessor.getOrganizacoesByDominio(dominio);
             for (int i = 0; i < lista.size(); i++) {
-                lista.get(i).setUsuarioCollection(null);
-                lista.get(i).setSalaCollection(null);
+//                lista.get(i).setUsuarioCollection(null);
+//                lista.get(i).setSalaCollection(null);
             }
             return lista;
         } return null;

@@ -1,7 +1,6 @@
 package br.com.wises.services;
 
 import br.com.wises.database.DbAccessor;
-import br.com.wises.database.EManager;
 import br.com.wises.database.pojo.Reserva;
 import br.com.wises.database.pojo.Usuario;
 import java.nio.charset.Charset;
@@ -71,26 +70,30 @@ public class ReservaService {
                     dataHoraInicio = new Date(userObj.getLong("data_hora_inicio"));
                     dataHoraFim = new Date(userObj.getLong("data_hora_fim"));
 
-                    Usuario user = DbAccessor.getUserById(idUsuario);
-                    novaReserva.setIdUsuario(user.getId());
-                    novaReserva.setNomeOrganizador(user.getNome());
-                    novaReserva.setIdSala(idSala);
-                    novaReserva.setDescricao(descricao);
-                    novaReserva.setDataHoraInicio(dataHoraInicio);
-                    novaReserva.setDataHoraFim(dataHoraFim);
-                    novaReserva.setAtivo(true);
+                    if (DbAccessor.isReservaDisponivel(idSala, dataHoraInicio, dataHoraFim)) {
+                        Usuario user = DbAccessor.getUserById(idUsuario);
+                        novaReserva.setIdUsuario(user.getId());
+                        novaReserva.setNomeOrganizador(user.getNome());
+                        novaReserva.setIdSala(idSala);
+                        novaReserva.setDescricao(descricao);
+                        novaReserva.setDataHoraInicio(dataHoraInicio);
+                        novaReserva.setDataHoraFim(dataHoraFim);
+                        novaReserva.setAtivo(true);
 
-                    Date date = new Date();
-                    Calendar c = Calendar.getInstance();
-                    c.setTime(date);
-                    c.add(c.HOUR, -3);
-                    date = c.getTime();
+                        Date date = new Date();
+                        Calendar c = Calendar.getInstance();
+                        c.setTime(date);
+                        c.add(c.HOUR, -3);
+                        date = c.getTime();
 
-                    novaReserva.setDataCriacao(date);
-                    novaReserva.setDataAlteracao(date);
+                        novaReserva.setDataCriacao(date);
+                        novaReserva.setDataAlteracao(date);
 
-                    DbAccessor.novaReserva(novaReserva);
-                    return "Reserva realizada com sucesso";
+                        DbAccessor.novaReserva(novaReserva);
+                        return "Reserva realizada com sucesso";
+                    } else {
+                        return "A sala já está reservada para o horário selecionado";
+                    }
                 } else {
                     return "A reserva não foi realizada";
                 }

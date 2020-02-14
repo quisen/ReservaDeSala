@@ -37,12 +37,6 @@ public class Organizacao implements Serializable {
 
     @Column(name = "ativo")
     private Boolean ativo;
-    @OneToMany(mappedBy = "idOrganizacao")
-    private Collection<Sala> salaCollection;
-
-    @OneToMany(mappedBy = "idOrganizacao")
-    private Collection<Usuario> usuarioCollection;
-
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -134,15 +128,6 @@ public class Organizacao implements Serializable {
         return "br.com.wises.database.pojo.Organizacao[ id=" + id + " ]";
     }
 
-    @XmlTransient
-    public Collection<Usuario> getUsuarioCollection() {
-        return usuarioCollection;
-    }
-
-    public void setUsuarioCollection(Collection<Usuario> usuarioCollection) {
-        this.usuarioCollection = usuarioCollection;
-    }
-
     public Boolean getAtivo() {
         return ativo;
     }
@@ -150,14 +135,4 @@ public class Organizacao implements Serializable {
     public void setAtivo(Boolean ativo) {
         this.ativo = ativo;
     }
-
-    @XmlTransient
-    public Collection<Sala> getSalaCollection() {
-        return salaCollection;
-    }
-
-    public void setSalaCollection(Collection<Sala> salaCollection) {
-        this.salaCollection = salaCollection;
-    }
-
 }

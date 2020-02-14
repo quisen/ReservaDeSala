@@ -20,10 +20,6 @@ public class SalaService {
             @HeaderParam("authorization") String authorization) {
         if (authorization != null && authorization.equals("secret")) {
             List<Sala> lista = DbAccessor.getSalasByOrganizacaoId(idOrganizacao);
-            for (int i = 0; i < lista.size(); i++) {
-                lista.get(i).getIdOrganizacao().setSalaCollection(null);
-                lista.get(i).getIdOrganizacao().setUsuarioCollection(null);
-            }
             return lista;
         } else {
             return null;
