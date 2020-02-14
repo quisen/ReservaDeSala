@@ -23,7 +23,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Reserva.findAll", query = "SELECT a FROM Reserva a"),
     @NamedQuery(name = "Reserva.findById", query = "SELECT a FROM Reserva a WHERE a.id = :id"),
     @NamedQuery(name = "Reserva.findByIdSala", query = "SELECT a FROM Reserva a WHERE a.idSala = :idSala AND a.ativo = 1"),
-    @NamedQuery(name = "Reserva.findByIdUsuario", query = "SELECT a FROM Reserva a WHERE a.idUsuario = :idUsuario"),
+    @NamedQuery(name = "Reserva.findByIdUsuario", query = "SELECT a FROM Reserva a WHERE a.idUsuario = :idUsuario AND a.ativo = 1"),
     @NamedQuery(name = "Reserva.findByDataHoraInicio", query = "SELECT a FROM Reserva a WHERE a.dataHoraInicio = :dataHoraInicio"),
     @NamedQuery(name = "Reserva.findByDataHoraFim", query = "SELECT a FROM Reserva a WHERE a.dataHoraFim = :dataHoraFim"),
     @NamedQuery(name = "Reserva.findByDescricao", query = "SELECT a FROM Reserva a WHERE a.descricao = :descricao"),
