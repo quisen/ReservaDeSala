@@ -3,7 +3,9 @@ package br.com.wises.services;
 import br.com.wises.database.DbAccessor;
 import br.com.wises.database.pojo.Reserva;
 import br.com.wises.database.pojo.Usuario;
+import br.com.wises.database.pojo.Sala;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Calendar;
 import java.util.Date;
@@ -18,6 +20,31 @@ import org.json.JSONObject;
 
 @Path("reserva")
 public class ReservaService {
+
+    @GET
+    @Path("byIdOrganizacao")
+    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    public List<Reserva> getReservasByIdOrganizacao(
+            @HeaderParam("id_organizacao") int idOrganizacao,
+            @HeaderParam("authorization") String authorization) {
+        if (authorization != null && authorization.equals("secret")) {
+
+            List<Reserva> listaReservas = new ArrayList<>();
+            List<Sala> salas = DbAccessor.getSalasByOrganizacaoId(idOrganizacao);
+            for (int i = 0; i < salas.size(); i++) {
+                List<Reserva> listaReservasSingleSala = new ArrayList<>();
+                listaReservasSingleSala = DbAccessor.getReservasByIdSala(salas.get(i).getId());
+                for (int j = 0; j < listaReservasSingleSala.size(); j++) {
+                    listaReservas.add(listaReservasSingleSala.get(i));
+                }
+            }
+
+//            List<Reserva> lista = DbAccessor.getReservasByIdOrganizacao(idOrganizacao);
+            return listaReservas;
+        } else {
+            return null;
+        }
+    }
 
     @GET
     @Path("byIdSala")

@@ -131,6 +131,16 @@ public class DbAccessor {
             return null;
         }
     }
+    public static List<Reserva> getReservasByIdOrganizacao(int idOrganizacao) {
+        try {
+            List<Reserva> l = EManager.getInstance().createNamedQuery("Reserva.findByIdOrganizacao").setParameter("idOrganizacao", idOrganizacao).setHint(QueryHints.REFRESH, HintValues.TRUE).getResultList();
+            clear();
+            return l;
+        } catch (NoResultException e) {
+            clear();
+            return null;
+        }
+    }
 
     public static boolean isReservaDisponivel(int idSala, Date dataHoraInicio, Date dataHoraFim) {
         try {
