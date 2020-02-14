@@ -110,6 +110,17 @@ public class DbAccessor {
     }
 
     //--------------- RESERVA ---------------//
+    public static Reserva getReservaById(int id) {
+        try {
+            Reserva r = (Reserva) EManager.getInstance().createNamedQuery("Reserva.findById").setParameter("id", id).setHint(QueryHints.REFRESH, HintValues.TRUE).getSingleResult();
+            clear();
+            return r;
+        } catch (NoResultException e) {
+            clear();
+            return null;
+        }
+    }
+
     public static List<Reserva> getReservasByIdSala(int idSala) {
         try {
             List<Reserva> l = EManager.getInstance().createNamedQuery("Reserva.findByIdSala").setParameter("idSala", idSala).setHint(QueryHints.REFRESH, HintValues.TRUE).getResultList();

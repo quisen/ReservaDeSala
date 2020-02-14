@@ -95,14 +95,35 @@ public class ReservaService {
                         return "A sala já está reservada para o horário selecionado";
                     }
                 } else {
-                    return "A reserva não foi realizada";
+                    return "A reserva não foi realizada, os dados enviados estão incompletos";
                 }
             } else {
-                return "A reserva não foi realizada";
+                return "A reserva não foi realizada, request inválido";
             }
         } catch (Exception e) {
             e.printStackTrace();
             return "A reserva não foi realizada";
+        }
+    }
+
+    @POST
+    @Path("cancelar")
+    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    public String cancelarReserva(
+            @HeaderParam("id_reserva") int idReserva,
+            @HeaderParam("authorization") String authorization) {
+        if (authorization != null && authorization.equals("secret")) {
+            try {
+                Reserva reserva = DbAccessor.getReservaById(idReserva);
+                reserva.setAtivo(false);
+                DbAccessor.modificaReserva(reserva);
+                return "A reserva foi cancelada com sucesso";
+            } catch (Exception e) {
+                e.printStackTrace();
+                return "O cancelamento da reserva não foi concluído";
+            }
+        } else {
+            return "O cancelamento da reserva não foi concluído";
         }
     }
 }
