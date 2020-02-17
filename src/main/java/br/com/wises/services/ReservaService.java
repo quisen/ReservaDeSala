@@ -90,7 +90,7 @@ public class ReservaService {
                 int idSala = 0, idUsuario = 0;
                 String descricao = "";
                 Date dataHoraInicio = null, dataHoraFim = null;
-                if (userObj.has("id_sala") && userObj.has("id_usuario") && userObj.has("descricao") && userObj.has("data_hora_inicio") && userObj.has("data_hora_fim") && userObj.has("ativo")) {
+                if (userObj.has("id_sala") && userObj.has("id_usuario") && userObj.has("descricao") && userObj.has("data_hora_inicio") && userObj.has("data_hora_fim")) {
                     idSala = userObj.getInt("id_sala");
                     idUsuario = userObj.getInt("id_usuario");
                     descricao = userObj.getString("descricao");
