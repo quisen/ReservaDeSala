@@ -8,6 +8,8 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import javax.ws.rs.Produces;
@@ -39,7 +41,14 @@ public class ReservaService {
                 }
             }
 
-//            List<Reserva> lista = DbAccessor.getReservasByIdOrganizacao(idOrganizacao);
+            Collections.sort(listaReservas, new Comparator<Reserva>() {
+                public int compare(Reserva r1, Reserva r2) {
+                    if (r1.getDataHoraInicio()== null || r2.getDataHoraInicio() == null) {
+                        return 0;
+                    }
+                    return r1.getDataHoraInicio().compareTo(r2.getDataHoraInicio());
+                }
+            });
             return listaReservas;
         } else {
             return null;

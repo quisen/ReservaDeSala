@@ -51,11 +51,16 @@ public class UsuarioService {
                 user.setSenha(null);
                 return Response.ok(user).build();
             } else {
-                return Response
-                        .status(Response.Status.NOT_FOUND)
-                        .entity(new Status("Usuário não encontrado"))
-                        .type(MediaType.APPLICATION_JSON)
-                        .build();
+                user = DbAccessor.getUserByEmail(email);
+                if (user != null) {
+                    return Response.ok(user).entity(new Status("Senha incorreta"))
+                            .type(MediaType.APPLICATION_JSON)
+                            .build();
+                } else {
+                    return Response.ok(user).entity(new Status("Usuário não encontrado"))
+                            .type(MediaType.APPLICATION_JSON)
+                            .build();
+                }
             }
         } else {
             return Response
@@ -64,7 +69,7 @@ public class UsuarioService {
                     .build();
         }
     }
-    
+
     @GET
     @Path("loginV2")
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
@@ -133,7 +138,7 @@ public class UsuarioService {
                 novoUsuario.setEmail(email);
                 novoUsuario.setNome(nome);
                 novoUsuario.setSenha(senha);
-                novoUsuario.setIdOrganizacao(organizacao);
+                novoUsuario.setIdOrganizacao(organizacao.getId());
 
                 DbAccessor.novoUsuario(novoUsuario);
 
