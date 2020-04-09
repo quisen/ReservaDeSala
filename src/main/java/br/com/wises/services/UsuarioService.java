@@ -138,7 +138,7 @@ public class UsuarioService {
                 novoUsuario.setEmail(email);
                 novoUsuario.setNome(nome);
                 novoUsuario.setSenha(senha);
-                novoUsuario.setIdOrganizacao(organizacao.getId());
+                novoUsuario.setIdOrganizacao(organizacao);
 
                 DbAccessor.novoUsuario(novoUsuario);
 
