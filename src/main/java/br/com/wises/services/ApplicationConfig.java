@@ -14,7 +14,6 @@ public class ApplicationConfig extends Application {
     }
 
     private void addRestResourceClasses(Set<Class<?>> resources) {
-        resources.add(br.com.wises.services.CORSFilter.class);
         resources.add(br.com.wises.services.OrganizacaoService.class);
         resources.add(br.com.wises.services.ReservaService.class);
         resources.add(br.com.wises.services.SalaService.class);
